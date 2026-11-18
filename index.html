@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Carteira Geral — Departamento Contábil</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f2f5fa; --surface:#fff; --ink:#132235; --muted:#5d6b7e; --line:#dbe3ee;
+  --deep:#0c2747; --brand:#1d5fae; --brand-soft:#e4eefb; --accent:#5fb0f0; --green:#17855a; --green-soft:#e2f4ea;
+  --gold:#c9a227; --gold-2:#a8841a; --gold-soft:#f6ecc8;
+  --late:#b83a2e; --late-soft:#fbe9e6; --orange:#b8621b; --orange-soft:#fbeedd;
+  --blue:#1d6a86; --blue-soft:#e2f0f5; --gray:#7d8f86; --gray-soft:#eef1ef; --dark:#4a4f4c;
+  --radius:14px; --shadow:0 1px 2px rgba(12,39,71,.06),0 4px 14px rgba(12,39,71,.07);
+}
+*{box-sizing:border-box} html,body{margin:0}
+body{font-family:Manrope,system-ui,sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.45}
+button,input,select,textarea{font:inherit;color:inherit}
+h1,h3{font-family:Fraunces,Georgia,serif;letter-spacing:-.01em}
+.hidden{display:none!important}
+
+.top{background:linear-gradient(135deg,var(--deep),#123a6a 60%,#18508f);color:#eef4fb;padding:18px 24px 0;position:relative}
+.top::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:linear-gradient(90deg,var(--accent),#a9d6fa,var(--accent))}
+.top-row{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px;flex:1;min-width:240px}
+.mark{width:40px;height:40px;border-radius:11px;background:var(--accent);color:var(--deep);display:grid;place-items:center;font-weight:800;font-size:18px;font-family:Fraunces,serif}
+.brand h1{margin:0;font-size:22px;color:#fff}
+.brand p{margin:2px 0 0;font-size:12px;color:#b9cde6;display:flex;align-items:center;gap:6px}
+.dot{width:7px;height:7px;border-radius:50%;background:#9fb3a9;display:inline-block}
+.dot.on{background:#55d39a}.dot.local{background:var(--accent)}
+.top-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.ref{display:flex;align-items:center;gap:6px;font-size:12px;color:#c9d9ee;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);border-radius:10px;padding:4px 6px 4px 10px}
+.ref input{background:transparent;border:0;color:#fff;font-weight:700;width:140px;color-scheme:dark}
+.tabs{display:flex;gap:4px;margin-top:16px;overflow-x:auto}
+.tabs a{color:#c9d9ee;text-decoration:none;padding:10px 16px;border-radius:10px 10px 0 0;font-weight:600;font-size:13.5px;white-space:nowrap}
+.tabs a:hover{color:#fff;background:rgba(255,255,255,.06)}
+.tabs a.active{background:var(--bg);color:var(--deep)}
+
+.btn{border:1px solid transparent;border-radius:10px;padding:9px 14px;font-weight:700;cursor:pointer;font-size:13.5px;white-space:nowrap;transition:.15s}
+a.btn{text-decoration:none;display:inline-block}
+.btn.sm{padding:7px 11px;font-size:12.5px}
+.btn.primary{background:var(--brand);color:#fff}.btn.primary:hover{background:var(--deep)}
+.btn.gold{background:var(--accent);color:var(--deep)}.btn.gold:hover{background:#86c4f4}
+.btn.ghost{background:var(--surface);border-color:var(--line)}.btn.ghost:hover{border-color:var(--brand);color:var(--brand)}
+.btn.ghost-light{background:transparent;border-color:rgba(255,255,255,.28);color:#eef4fb}.btn.ghost-light:hover{background:rgba(255,255,255,.08)}
+.btn.danger{background:transparent;border-color:#e8c3bd;color:var(--late)}.btn.danger:hover{background:var(--late-soft)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+
+main{padding:20px 24px 48px;max-width:1600px;margin:0 auto}
+.resumo{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:16px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:13px 15px;text-align:left;cursor:pointer;box-shadow:var(--shadow);position:relative;overflow:hidden;transition:.15s}
+.kpi:hover{transform:translateY(-1px)}
+.kpi::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--c)}
+.kpi .lbl{font-size:11.5px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.kpi .num{font-family:Fraunces,serif;font-size:32px;font-weight:700;line-height:1.1;margin-top:4px;color:var(--c)}
+.kpi .sub{font-size:12px;color:var(--muted)}
+.kpi.active{outline:2px solid var(--c);outline-offset:-2px;background:color-mix(in srgb,var(--c) 6%,#fff)}
+.kpi.total{--c:var(--deep);cursor:default}.kpi.late{--c:var(--late)}.kpi.gold{--c:var(--gold-2)}.kpi.blue{--c:var(--blue)}.kpi.orange{--c:var(--orange)}
+
+.filtros{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:12px;margin-bottom:16px;box-shadow:var(--shadow)}
+.f-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.f-row input,.f-row select{border:1px solid var(--line);background:#f8fafd;border-radius:10px;padding:8px 10px;min-width:140px;flex:1}
+.f-row input[type=search]{flex:2;min-width:200px}
+.f-row #fOrdem{flex:0 1 180px}
+.chips{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;align-items:center}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--brand-soft);color:var(--brand);border-radius:999px;padding:4px 6px 4px 12px;font-size:12.5px;font-weight:700}
+.chip button{border:0;background:rgba(0,0,0,.08);border-radius:999px;width:20px;height:20px;cursor:pointer}
+.count{font-size:12.5px;color:var(--muted);margin-left:auto}
+
+/* situações */
+.s-none{--sc:#8b9a93;--ss:var(--gray-soft)} .s-ok{--sc:var(--green);--ss:var(--green-soft)}
+.s-doc{--sc:var(--gold-2);--ss:var(--gold-soft)} .s-fech{--sc:var(--orange);--ss:var(--orange-soft)}
+.s-mov{--sc:var(--blue);--ss:var(--blue-soft)} .s-nada{--sc:var(--late);--ss:var(--late-soft)} .s-enc{--sc:var(--dark);--ss:#e8e8e6}
+.pill{display:inline-block;font-size:11.5px;font-weight:800;padding:3px 9px;border-radius:999px;background:var(--ss);color:var(--sc);white-space:nowrap}
+
+.board{display:grid;grid-template-columns:repeat(7,minmax(240px,1fr));gap:10px;overflow-x:auto;padding-bottom:8px}
+.board.b4{grid-template-columns:repeat(4,minmax(250px,1fr))}
+.kbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+.seg{display:inline-flex;background:#e5ebf3;border-radius:12px;padding:3px}
+.seg button{border:0;background:transparent;padding:8px 14px;border-radius:9px;font-weight:700;cursor:pointer;color:var(--muted);font-size:13px}
+.seg button.on{background:var(--surface);color:var(--deep);box-shadow:var(--shadow)}
+.kbar .ctrl-comp{margin:0}
+.kbar .prog{flex:1;min-width:140px}
+.kprog{display:flex;align-items:center;gap:10px;flex:1;min-width:220px}
+.card .acao{display:flex;gap:6px;align-items:center;justify-content:space-between;margin-top:8px;flex-wrap:wrap}
+.card .info{font-size:11.5px;color:var(--ink)}
+.card .info b{font-weight:800}
+.mvb{display:flex;gap:4px}
+.mvb button{border:1px solid var(--line);background:#f8fafd;border-radius:8px;width:28px;height:26px;cursor:pointer;font-weight:800;color:var(--muted)}
+.mvb button:hover{border-color:var(--brand);color:var(--brand)}
+.mvb button:disabled{opacity:.3;cursor:default}
+.mini{border:1px solid var(--line);background:#fff;border-radius:8px;padding:4px 9px;font-size:11.5px;font-weight:700;cursor:pointer;color:var(--brand)}
+.mini:hover{border-color:var(--brand)}
+.mes-box{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
+.mes-item{border:1px solid var(--line);border-radius:12px;padding:12px}
+.mes-item h5{margin:0 0 6px;font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+.hist{font-size:12.5px;margin:6px 0 0;padding-left:16px}
+.col{background:#e5ebf3;border-radius:var(--radius);display:flex;flex-direction:column;min-height:240px}
+.col-head{display:flex;justify-content:space-between;align-items:center;padding:11px 12px;font-weight:800;font-size:12.5px;border-bottom:3px solid var(--sc)}
+.col-head b{background:var(--surface);border-radius:999px;padding:1px 9px;font-size:12px;color:var(--sc)}
+.col-body{padding:8px;display:flex;flex-direction:column;gap:7px;flex:1;max-height:75vh;overflow-y:auto;transition:background .15s}
+.col-body.over{background:rgba(29,95,174,.1)}
+.col-empty{color:#9a9a8a;font-size:12px;text-align:center;padding:16px 6px;border:1.5px dashed #c4d0e0;border-radius:10px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:11px;padding:9px 11px;cursor:pointer}
+.card:hover{border-color:#b7c7dc;box-shadow:var(--shadow)}
+.card.dragging{opacity:.45}
+.card-top{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);font-weight:700}
+.card h4{margin:3px 0 4px;font-size:13.5px;line-height:1.25}
+.meta{display:flex;gap:5px;flex-wrap:wrap;align-items:center;font-size:11.5px;color:var(--muted)}
+.tag{font-size:10.5px;font-weight:800;padding:2px 6px;border-radius:6px;background:#e9eef5;color:#4d5c70}
+.tag.SN{background:var(--green-soft);color:var(--green)} .tag.LP{background:var(--gold-soft);color:#7a5e0c} .tag.LR{background:#e6ecef;color:#2f4f5c}
+.tag.p1{background:var(--late-soft);color:var(--late)}
+.atr{font-size:11.5px;font-weight:700;padding:2px 8px;border-radius:999px;white-space:nowrap}
+.atr.ok{background:var(--green-soft);color:var(--green)} .atr.late{background:var(--late-soft);color:var(--late)} .atr.na{background:var(--gray-soft);color:#5d6e66}
+.resp{font-weight:700;color:var(--ink)} .resp.vazio{color:var(--late);font-weight:600}
+
+.tablewrap{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:auto;box-shadow:var(--shadow);max-height:78vh}
+table{border-collapse:collapse;width:100%}
+th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);padding:10px;border-bottom:1px solid var(--line);background:#f4f7fb;position:sticky;top:0;z-index:1;white-space:nowrap}
+th.y{background:#dcebfb;color:#174f92}
+td{padding:7px 10px;border-bottom:1px solid #e9eef5;vertical-align:middle}
+tr.row:hover td{background:#f6f9fd}
+td.nome{cursor:pointer;min-width:200px} td.nome:hover b{color:var(--brand);text-decoration:underline}
+.cell-sel,.cell-in{border:1px solid var(--line);border-radius:8px;padding:5px 7px;font-size:12.5px;background:#f7fbff;max-width:190px}
+.cell-sel.sit{font-weight:700;color:var(--sc);border-left:4px solid var(--sc)}
+.cell-in{width:128px}
+.muted{color:var(--muted)} .small{font-size:12px}
+.y-note{display:inline-block;width:10px;height:10px;border-radius:3px;background:#dcebfb;border:1px solid #a9c8ec;vertical-align:-1px}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
+.panel h3{margin:0 0 12px;font-size:18px;color:var(--deep)}
+.mx td,.mx th{text-align:center} .mx td:first-child,.mx th:first-child{text-align:left}
+.mx td.n{cursor:pointer;font-weight:700} .mx td.n:hover{background:var(--brand-soft)} .mx td.z{color:#c3c9c5}
+.mx tr.tot td{font-weight:800;border-top:2px solid var(--line)}
+.alerta{background:var(--late-soft);border:1px solid #efc9c3;color:#7c2a21;border-radius:12px;padding:12px 14px;margin-bottom:16px;font-size:13px}
+.alerta b{color:var(--late)}
+
+.field{display:flex;flex-direction:column;gap:5px;margin-bottom:11px;font-weight:700;font-size:12px;color:#3c5048}
+.field input,.field select,.field textarea{border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:#f8fafd;font-weight:500;font-size:14px}
+.field.y input,.field.y select,.field.y textarea{background:#f1f7ff;border-color:#b9d3f0}
+.sec{font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin:14px 0 8px;padding-bottom:5px;border-bottom:1px solid var(--line)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.three{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.hint{font-size:12.5px;color:var(--muted);margin:6px 0 0}
+.empty{background:var(--surface);border:1.5px dashed #c4d0e0;border-radius:var(--radius);padding:36px 20px;text-align:center}
+.empty h3{margin:0 0 6px;color:var(--deep)} .empty p{margin:0 auto;color:var(--muted);max-width:480px}
+
+.modal{position:fixed;inset:0;background:rgba(8,22,42,.5);display:grid;place-items:center;padding:16px;z-index:50}
+.modal-card{background:var(--surface);border-radius:18px;width:min(720px,100%);max-height:92vh;overflow:auto;padding:22px;box-shadow:0 20px 60px rgba(0,0,0,.25);border-top:4px solid var(--brand)}
+.modal-card h3{margin:0 0 2px;font-size:20px;color:var(--deep)}
+.modal-card .subt{margin:0 0 6px;color:var(--muted);font-size:13px}
+.mf{display:flex;gap:8px;align-items:center;margin-top:16px;flex-wrap:wrap} .mf .sp{flex:1}
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--deep);color:#fff;padding:11px 16px;border-radius:12px;font-weight:600;z-index:60;box-shadow:0 10px 30px rgba(0,0,0,.25);max-width:90vw}
+.toast.err{background:var(--late)}
+.ctrl-bar{margin-bottom:12px}
+.ctrl-comp{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+.ctrl-comp h3{margin:0 4px;font-size:20px;color:var(--deep);min-width:170px}
+.ctrl-comp input{border:1px solid var(--line);border-radius:10px;padding:6px 9px;font-weight:600;background:#f8fafd}
+.prog{height:8px;background:#e5ebf3;border-radius:8px;overflow:hidden;margin:4px 0}
+.prog div{height:100%;background:var(--green);transition:width .3s}
+.ctrl-chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.cchip{border:1px solid transparent;background:var(--ss);color:var(--sc);border-radius:999px;padding:6px 12px;font-weight:700;cursor:pointer;font-size:12.5px}
+.cchip.on{border-color:var(--sc);box-shadow:0 0 0 1px var(--sc)}
+.cob{display:flex;align-items:center;gap:8px;flex-wrap:nowrap;white-space:nowrap}
+.undo{border:0;background:none;cursor:pointer;color:var(--muted);font-size:16px;padding:0 4px}
+.undo:hover{color:var(--late)}
+.ck{display:flex;align-items:center;gap:6px;cursor:pointer;white-space:nowrap}
+.ctrl input[type=checkbox]{width:18px;height:18px;accent-color:var(--green);cursor:pointer}
+.ctrl input.obs{width:190px}
+tr.st-ok td{background:#f4fbf7}
+
+#login{position:fixed;inset:0;background:linear-gradient(135deg,#0c2747,#123a6a 60%,#18508f);display:grid;place-items:center;z-index:100;padding:16px}
+#loginBox{background:#fff;border-radius:18px;padding:28px;width:min(420px,100%);box-shadow:0 20px 60px rgba(0,0,0,.3);border-top:4px solid var(--accent)}
+#loginBox h2{font-family:Fraunces,serif;margin:6px 0 8px;color:var(--deep)} #loginBox p{color:var(--muted);margin:0 0 12px}
+#loginBox form{display:flex;flex-direction:column;gap:10px} #loginBox input{border:1px solid var(--line);border-radius:10px;padding:11px 12px;font-size:15px}
+.lg-mark{width:44px;height:44px;border-radius:12px;background:var(--accent);color:var(--deep);display:grid;place-items:center;font-weight:800;font-family:Fraunces,serif;font-size:20px}
+.usuario{display:flex;align-items:center;gap:6px;font-size:12px;color:#c9d9ee}
+.usuario b{color:#fff}
+footer.foot{max-width:1600px;margin:0 auto;padding:0 24px 28px;color:var(--muted);font-size:12px}
+
+@media (max-width:1100px){.resumo{grid-template-columns:repeat(3,1fr)}.grid2{grid-template-columns:1fr}}
+@media (max-width:700px){
+  .resumo{grid-template-columns:repeat(3,1fr);gap:8px} .kpi{padding:8px 10px} .kpi .num{font-size:22px} .kpi .sub{display:none} .kpi .lbl{font-size:10px}
+  .f-row #fAntigo,.f-row #fPer,.f-row #fPrior,.f-row #fGrupo,.f-row #fOrdem{display:none}
+  .top{padding:14px 14px 0} main{padding:14px 12px 40px}
+  .board,.board.b4{grid-template-columns:repeat(var(--nc,7),minmax(80vw,1fr))}
+  .mes-box{grid-template-columns:1fr}
+  .two,.three{grid-template-columns:1fr}
+  .f-row select,.f-row input{min-width:calc(50% - 4px)}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="top-row">
+    <div class="brand"><div class="mark">C</div>
+      <div><h1>Carteira Geral</h1><p id="syncInfo"><span class="dot"></span> Carregando dados…</p></div></div>
+    <div class="top-actions">
+      <span class="usuario hidden" id="usuarioBox">Olá, <b id="usuarioNome"></b> <button class="btn ghost-light sm" onclick="sairDoPainel()">Sair</button></span>
+      <label class="ref" title="Até qual competência a carteira deveria estar fechada hoje">Fechamento esperado até <input type="month" id="refMes"></label>
+      <button id="btnExport" class="btn gold">Importar / Exportar</button>
+    </div>
+  </div>
+  <nav class="tabs" id="tabs">
+    <a href="#kanban" data-tab="kanban">Kanban</a>
+    <a href="#lista" data-tab="lista">Levantamento</a>
+    <a href="#controle" data-tab="controle">Controle mensal</a>
+    <a href="#resumo" data-tab="resumo">Resumo</a>
+    <a href="#pendencias" data-tab="pendencias">Pendências</a>
+  </nav>
+</header>
+
+<main>
+  <section id="kpis" class="resumo"></section>
+  <section id="filtros" class="filtros">
+    <div class="f-row">
+      <input id="fBusca" type="search" placeholder="Buscar empresa, grupo, cód, banco, contato…">
+      <select id="fNovo" data-k="novoResp"></select>
+      <select id="fAntigo" data-k="respAntigo"></select>
+      <select id="fSit" data-k="situacao"></select>
+      <select id="fTrib" data-k="trib"></select>
+      <select id="fPer" data-k="period"></select>
+      <select id="fPrior" data-k="prior"></select>
+      <select id="fGrupo" data-k="grupo"></select>
+      <select id="fOrdem"></select>
+    </div>
+    <div class="chips"><span id="fChips"></span><button id="fLimpar" class="btn ghost sm">Limpar filtros</button><button id="btnNova" class="btn ghost sm">+ Nova empresa</button><span class="count" id="fCount"></span></div>
+  </section>
+  <section id="conteudo"></section>
+</main>
+<footer class="foot">Colunas com fundo <span class="y-note"></span> azul-claro são as do levantamento (preencher). As demais vieram da planilha antiga "Controle Geral 2026" (~jul/26) e devem ser conferidas. O atraso usa o "Último mês fechado REAL" quando preenchido; senão, o da planilha antiga.</footer>
+
+<div id="login" class="hidden"><div id="loginBox"></div></div>
+<div id="modal" class="modal hidden" role="dialog" aria-modal="true"><div class="modal-card" id="modalCard"></div></div>
+<div id="toast" class="toast hidden" role="status"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<script src="adaptador-supabase.js"></script>
+<script>
+/* ============ Constantes ============ */
+const RESPONSAVEIS = ['Carolaine','Jéssica','Mariane','A definir'];
+const NOME_ANTIGO = {'Mari': 'Mariane'};   // arquivos antigos: converte o nome na importação
+const SITUACOES = ['Em dia','Atrasado – falta doc','Atrasado – falta fechar','Sem movimento','Cliente não envia nada','Encerrando/saindo'];
+const SIT_CLS = {'':'s-none','Em dia':'s-ok','Atrasado – falta doc':'s-doc','Atrasado – falta fechar':'s-fech','Sem movimento':'s-mov','Cliente não envia nada':'s-nada','Encerrando/saindo':'s-enc'};
+const MESES = ['JAN','FEV','MAR','ABR','MAI','JUN','JUL','AGO','SET','OUT','NOV','DEZ'];
+const PEND_STATUS = ['Pendente','Em andamento','Resolvido'];
+const COLS_EXPORT = [['cod','Cód'],['prior','Prior.'],['grupo','Grupo'],['empresa','Empresa'],['trib','Tributação'],['period','Periodicidade'],['respAntigo','Responsável (planilha antiga)'],['bancos','Bancos (conta corrente)'],['aplicacoes','Aplicações'],['caixa','Fech. por caixa?'],['canal','Canal de envio hoje'],['ultDocAntigo','Último doc OK (planilha antiga)'],['ultFechAntigo','Último mês fechado (planilha antiga)'],['novoResp','Novo responsável'],['ultFechReal','Último mês fechado REAL (Domínio)'],['contato','Contato p/ cobrança'],['email','E-mail p/ cobrança'],['whatsapp','WhatsApp'],['outrosDocs','Outros docs (cartão, maquininha etc.)'],['situacao','Situação'],['vincular','Vincular no Processos?'],['obs','Observações']];
+
+/* ============ Estado ============ */
+const state = { empresas:[], pend:[], ref:'', mode:'loading', view:'kanban', kview:'etapa', ctrl:{}, ctrlComp:'', ctrlF:'', ctrlOk:false, user:null, uid:null,
+  f:{busca:'', novoResp:'', respAntigo:'', situacao:'', trib:'', period:'', prior:'', grupo:'', rapido:'', ordem:'cod'} };
+let db = null, renderPendente = false;
+const LS_KEY = 'carteira-geral-v1';
+let local = {empresas:{}, pendencias:{}, controles:{}, config:{}};
+
+/* ============ Utilidades ============ */
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pad = n => String(n).padStart(2,'0');
+function mesPadrao(){ const d = new Date(); d.setDate(1); d.setMonth(d.getMonth() - (new Date().getDate() >= 25 ? 1 : 2)); return `${d.getFullYear()}-${pad(d.getMonth()+1)}`; }
+function parseMes(s){ const m = String(s||'').toUpperCase().match(/^([A-Z]{3})\/(\d{2})/); if (!m) return null; const i = MESES.indexOf(m[1]); return i < 0 ? null : `20${m[2]}-${pad(i+1)}`; }
+const fmtMes = c => c ? `${MESES[Number(c.slice(5,7))-1]}/${c.slice(2,4)}` : '';
+const idx = c => { const [y,m] = c.split('-').map(Number); return y*12 + (m-1); };
+function esperado(e, ref){
+  if (!ref) return null;
+  if ((e.period||'') !== 'Trimestral') return ref;
+  let [y,m] = ref.split('-').map(Number); let q = Math.floor(m/3)*3; if (q === 0){ y--; q = 12; } return `${y}-${pad(q)}`;
+}
+function ultimoFechado(e){
+  if (e.ultFechReal) return {mes:e.ultFechReal, fonte:'real'};
+  const p = parseMes(e.ultFechAntigo); return {mes:p, fonte:'antiga'};
+}
+function atraso(e){
+  if (e.situacao === 'Encerrando/saindo') return {tipo:'na', txt:'Encerrando'};
+  const exp = esperado(e, state.ref); const u = ultimoFechado(e);
+  if (!u.mes) return {tipo:'late', txt: e.ultFechReal ? '—' : 'Nenhum mês fechado', meses: 99, fonte:u.fonte};
+  const n = exp ? idx(exp) - idx(u.mes) : 0;
+  if (n <= 0) return {tipo:'ok', txt:`Fechado ${fmtMes(u.mes)}`, meses:0, fonte:u.fonte};
+  return {tipo:'late', txt:`${fmtMes(u.mes)} · ${n} ${n===1?'mês':'meses'} atrás`, meses:n, fonte:u.fonte};
+}
+const atrasada = e => { const a = atraso(e); return a.tipo === 'late' && e.situacao !== 'Sem movimento'; };
+function tagTrib(t){ t = t||''; const c = /^Simples/.test(t) ? 'SN' : /Presumido/.test(t) ? 'LP' : /Real/.test(t) ? 'LR' : '';
+  const abrev = {'Simples Nacional':'SN','Lucro Presumido':'LP','Lucro Real':'LR','Lucro Real Trimestral':'LR trim.','Simples Nacional- Regime misto':'SN misto'}[t] || t || 'Sem tributação';
+  return `<span class="tag ${c}" title="${esc(t)}">${esc(abrev)}</span>`; }
+function toast(msg, tipo){ const t = $('#toast'); t.textContent = msg; t.className = 'toast' + (tipo==='err'?' err':''); clearTimeout(toast._t); toast._t = setTimeout(() => t.classList.add('hidden'), tipo==='err'?6000:3000); }
+function erro(e){ const c = e && e.code;
+  toast(c==='invalid_argument' ? 'Sem permissão para editar este painel.' : c==='resource_exhausted' ? 'Muitas alterações seguidas — aguarde uns segundos.' : 'Não foi possível salvar agora. Tente de novo.', 'err'); }
+
+/* ============ Persistência ============ */
+function salvarLocal(){ try { localStorage.setItem(LS_KEY, JSON.stringify(local)); } catch(e){} }
+function localParaEstado(){
+  state.empresas = Object.entries(local.empresas).map(([id,d]) => ({id,...d}));
+  state.pend = Object.entries(local.pendencias).map(([id,d]) => ({id,...d}));
+  if (local.config.ref) state.ref = local.config.ref;
+  localCtrl();
+}
+async function gravar(col, id, campos, novo){
+  try {
+    if (db) {
+      const ref = db.collection(col).doc(id);
+      const op = () => novo ? ref.set(campos) : ref.update(campos);
+      try { await op(); } catch(e){ if (e && e.code==='unavailable'){ await new Promise(r=>setTimeout(r,500+Math.random()*500)); await op(); } else throw e; }
+    } else { local[col][id] = novo ? campos : {...(local[col][id]||{}), ...campos}; salvarLocal(); localParaEstado(); render(); }
+    return true;
+  } catch(e){ erro(e); return false; }
+}
+async function apagar(col, id){
+  try { if (db) await db.collection(col).doc(id).delete(); else { delete local[col][id]; salvarLocal(); localParaEstado(); render(); } return true; }
+  catch(e){ erro(e); return false; }
+}
+const campoEmpresa = (id, campos) => gravar('empresas', id, {...campos, atualizadoEm: new Date().toISOString()}, false);
+function setSync(c, t){ $('#syncInfo').innerHTML = `<span class="dot ${c}"></span> ${esc(t)}`; }
+
+function iniciarLocal(){
+  state.mode = 'local';
+  try { const raw = localStorage.getItem(LS_KEY); if (raw) local = Object.assign({empresas:{},pendencias:{},controles:{},config:{}}, JSON.parse(raw)); } catch(e){}
+  localParaEstado(); setSync('local','Modo local: dados só neste navegador'); render();
+}
+function iniciarDb(){
+  state.mode = 'online';
+  const ok = {e:false,p:false};
+  const timer = setTimeout(() => { if (!ok.e) setSync('','Os dados ainda não carregaram — verifique a conexão'); }, 10000);
+  const pronto = (k,s) => { if (!s.metadata.fromCache) { ok[k] = true; if (k==='e') state.carregado = true; } if (ok.e && ok.p){ clearTimeout(timer); setSync('on','Dados compartilhados com a equipe · sincronizado'); } };
+  const falhou = () => { clearTimeout(timer); setSync('','Dados indisponíveis no momento'); };
+  db.collection('empresas').onSnapshot(s => { state.empresas = s.docs.map(d => ({id:d.id,...d.data()})); pronto('e',s); render(); }, falhou);
+  db.collection('pendencias').onSnapshot(s => { state.pend = s.docs.map(d => ({id:d.id,...d.data()})); pronto('p',s); render(); }, falhou);
+  assinarCtrl();
+  db.doc('config/geral').onSnapshot(d => { if (d.exists && d.data().ref){ state.ref = d.data().ref; $('#refMes').value = state.ref; render(); } }, () => {});
+}
+
+/* ============ Filtros ============ */
+function rapidoOk(e, r){
+  if (r==='semResp') return !e.novoResp || e.novoResp==='A definir';
+  if (r==='semSit') return !e.situacao;
+  if (r==='semEmail') return !e.email;
+  if (r==='atraso') return atrasada(e);
+  if (r==='naoEnvia') return e.situacao==='Cliente não envia nada' || e.situacao==='Atrasado – falta doc';
+  if (r==='semTrib') return !e.trib;
+  return true;
+}
+function filtrar({base=false}={}){
+  const f = state.f, q = f.busca.trim().toLowerCase();
+  return state.empresas.filter(e => {
+    if (q && !['empresa','grupo','bancos','aplicacoes','contato','email','obs','outrosDocs'].some(k => String(e[k]||'').toLowerCase().includes(q)) && String(e.cod) !== q) return false;
+    if (base) return true;
+    for (const k of ['respAntigo','trib','period','grupo']) if (f[k] && String(e[k]||'(vazio)') !== f[k]) return false;
+    if (f.novoResp && (f.novoResp === '(vazio)' ? e.novoResp : e.novoResp !== f.novoResp)) return false;
+    if (f.situacao && (f.situacao === '(vazio)' ? e.situacao : e.situacao !== f.situacao)) return false;
+    if (f.prior && String(e.prior) !== f.prior) return false;
+    if (f.rapido && !rapidoOk(e, f.rapido)) return false;
+    return true;
+  });
+}
+function ordenar(l){
+  const o = state.f.ordem;
+  return l.slice().sort((a,b) => o==='empresa' ? a.empresa.localeCompare(b.empresa)
+    : o==='atraso' ? (atraso(b).meses??-1) - (atraso(a).meses??-1) || a.cod - b.cod
+    : o==='prior' ? (a.prior||9) - (b.prior||9) || a.cod - b.cod
+    : (a.cod||0) - (b.cod||0));
+}
+const unicos = k => [...new Set(state.empresas.map(e => e[k] == null || e[k]==='' ? '(vazio)' : String(e[k])))].sort((a,b)=>a.localeCompare(b,'pt-BR',{numeric:true}));
+
+function montarFiltros(){
+  $('#fBusca').addEventListener('input', e => { state.f.busca = e.target.value; render(); });
+  document.querySelectorAll('#filtros select').forEach(s => s.addEventListener('change', e => {
+    const k = s.id === 'fOrdem' ? 'ordem' : s.dataset.k; state.f[k] = e.target.value; render(); }));
+  $('#fLimpar').onclick = () => { state.f = {busca:'',novoResp:'',respAntigo:'',situacao:'',trib:'',period:'',prior:'',grupo:'',rapido:'',ordem:state.f.ordem}; $('#fBusca').value=''; render(); };
+  $('#fChips').addEventListener('click', e => { if (e.target.closest('[data-x]')){ state.f.rapido=''; render(); } });
+}
+function opcoes(sel, rotulo, vals, atual){ $(sel).innerHTML = `<option value="">${rotulo}</option>` + vals.map(v => `<option value="${esc(v)}">${esc(v)}</option>`).join(''); $(sel).value = atual; }
+function atualizarFiltros(){
+  const f = state.f;
+  opcoes('#fNovo','Novo responsável: todos',['(vazio)',...RESPONSAVEIS],f.novoResp);
+  opcoes('#fAntigo','Resp. antigo: todos',unicos('respAntigo'),f.respAntigo);
+  opcoes('#fSit','Situação: todas',['(vazio)',...SITUACOES],f.situacao);
+  opcoes('#fTrib','Tributação: todas',unicos('trib'),f.trib);
+  opcoes('#fPer','Periodicidade: todas',unicos('period'),f.period);
+  opcoes('#fPrior','Prioridade: todas',['1','2'],f.prior);
+  opcoes('#fGrupo','Grupo: todos',unicos('grupo'),f.grupo);
+  $('#fOrdem').innerHTML = [['cod','Ordem: Cód'],['empresa','Ordem: Empresa A–Z'],['atraso','Ordem: maior atraso'],['prior','Ordem: Prioridade']].map(([v,l]) => `<option value="${v}">${l}</option>`).join('');
+  $('#fOrdem').value = f.ordem;
+  const nomes = {semResp:'Sem novo responsável', semSit:'Situação não preenchida', semEmail:'Sem e-mail de cobrança', atraso:'Fechamento atrasado', naoEnvia:'Problema de documento', semTrib:'Sem tributação/cadastro incompleto'};
+  $('#fChips').innerHTML = f.rapido ? `<span class="chip">${nomes[f.rapido]} <button data-x title="Remover">×</button></span>` : '';
+}
+
+/* ============ Render ============ */
+function render(){
+  const a = document.activeElement;
+  if (a && $('#conteudo').contains(a) && /INPUT|SELECT|TEXTAREA/.test(a.tagName) && a.type !== 'search'){ renderPendente = true; renderKpis(); return; }
+  renderPendente = false;
+  document.querySelectorAll('#tabs a').forEach(x => x.classList.toggle('active', x.dataset.tab === state.view));
+  $('#filtros').classList.toggle('hidden', state.view === 'pendencias' || state.view === 'resumo');
+  renderKpis(); atualizarFiltros(); renderConteudo();
+}
+function renderKpis(){
+  const l = filtrar({base:true}), n = r => l.filter(e => rapidoOk(e,r)).length;
+  const cards = [
+    [null,'total','Empresas na carteira', l.length, `${state.empresas.filter(e=>e.situacao==='Encerrando/saindo').length} encerrando/saindo`],
+    ['atraso','late','Fechamento atrasado', n('atraso'), `esperado até ${fmtMes(state.ref)} (trim.: ${fmtMes(esperado({period:'Trimestral'},state.ref))})`],
+    ['semResp','gold','Sem novo responsável', n('semResp'), 'vazio ou "A definir"'],
+    ['semSit','blue','Situação não preenchida', n('semSit'), 'levantamento pendente'],
+    ['semEmail','orange','Sem e-mail de cobrança', n('semEmail'), 'não dá para cobrar documento'],
+  ];
+  $('#kpis').innerHTML = cards.map(([k,c,lbl,num,sub]) => `<button class="kpi ${c} ${k && state.f.rapido===k?'active':''}" ${k?`data-rapido="${k}"`:''}><div class="lbl">${lbl}</div><div class="num">${num}</div><div class="sub">${esc(sub)}</div></button>`).join('');
+}
+function badgeAtraso(e){ const a = atraso(e); return `<span class="atr ${a.tipo}" title="${a.fonte==='antiga'?'Base: planilha antiga (conferir no Domínio)':'Base: último mês fechado REAL'}">${esc(a.txt)}${a.fonte==='antiga' && a.tipo!=='na' ? ' *' : ''}</span>`; }
+
+function renderConteudo(){
+  const el = $('#conteudo');
+  if (state.mode === 'loading'){ el.innerHTML = '<div class="empty"><p>Carregando…</p></div>'; return; }
+  if (state.view === 'pendencias') return renderPendencias(el);
+  if (state.view === 'resumo') return renderResumo(el);
+  if (!state.empresas.length){
+    if (state.mode === 'online' && state.carregado) { el.innerHTML = `<div class="empty"><h3>Nenhuma empresa cadastrada ainda</h3><p>Suba a planilha <b>Levantamento Carteira Geral</b> (.xlsx) ou um backup JSON do painel. Depois disso, a equipe cadastra e edita tudo por aqui.</p><div class="mf" style="justify-content:center"><button class="btn gold" id="btnImportar">Importar planilha ou backup</button><button class="btn ghost" id="btnNova2">Cadastrar uma empresa</button></div></div>`; $('#btnImportar').onclick = abrirImportJSON; $('#btnNova2').onclick = novaEmpresa; }
+    else el.innerHTML = '<div class="empty"><h3>Nenhuma empresa carregada</h3><p>Os dados da carteira ficam no painel compartilhado. Entre com o seu e-mail para ver a carteira da equipe.</p></div>';
+    return; }
+  const l = ordenar(filtrar());
+  $('#fCount').textContent = `${l.length} de ${state.empresas.length} empresas`;
+  if (state.view === 'controle') return renderControle(el);
+  if (state.view === 'kanban') renderKanban(el, l); else renderLista(el, l);
+}
+
+function renderLista(el, l){
+  if (!l.length){ el.innerHTML = '<div class="empty"><h3>Nada encontrado</h3><p>Nenhuma empresa com esses filtros.</p></div>'; return; }
+  const sel = (id, campo, vals, atual, cls='') => `<select class="cell-sel ${cls}" data-id="${esc(id)}" data-campo="${campo}"><option value="">—</option>${vals.map(v => `<option ${v===atual?'selected':''}>${esc(v)}</option>`).join('')}</select>`;
+  el.innerHTML = `<div class="tablewrap"><table><thead><tr>
+    <th>Cód</th><th>Empresa</th><th>Tributação</th><th>Resp. antigo</th><th>Fechamento</th>
+    <th class="y">Novo responsável</th><th class="y">Últ. fechado REAL</th><th class="y">Situação</th><th class="y">E-mail cobrança</th><th class="y">Processos?</th></tr></thead><tbody>
+    ${l.map(e => `<tr class="row">
+      <td class="muted">${esc(e.cod)}${e.prior==1?' <span class="tag p1" title="Prioridade 1">P1</span>':''}</td>
+      <td class="nome" data-abrir="${esc(e.id)}"><b>${esc(e.empresa)}</b><div class="muted small">${esc([e.grupo, e.period].filter(Boolean).join(' · ') || '—')}</div></td>
+      <td>${tagTrib(e.trib)}</td>
+      <td class="small">${esc(e.respAntigo||'—')}</td>
+      <td>${badgeAtraso(e)}</td>
+      <td>${sel(e.id,'novoResp',RESPONSAVEIS,e.novoResp)}</td>
+      <td><input type="month" class="cell-in" data-id="${esc(e.id)}" data-campo="ultFechReal" value="${esc(e.ultFechReal||'')}"></td>
+      <td>${sel(e.id,'situacao',SITUACOES,e.situacao,'sit '+SIT_CLS[e.situacao||''])}</td>
+      <td class="small">${e.email ? esc(e.email) : `<button class="btn ghost sm" data-abrir="${esc(e.id)}">+ contato</button>`}</td>
+      <td>${sel(e.id,'vincular',['Sim','Não'],e.vincular)}</td></tr>`).join('')}
+  </tbody></table></div><p class="hint">Clique no nome da empresa para ver e editar todos os campos (bancos, aplicações, contato, WhatsApp, outros docs, observações). * = atraso calculado pela planilha antiga.</p>`;
+}
+
+const ETAPAS = [['cobrar','Falta cobrar','s-nada'],['docs','Aguardando docs','s-doc'],['fechar','Falta fechar','s-fech'],['ok','Concluída','s-ok']];
+const ORD = {cobrar:0, docs:1, fechar:2, ok:3};
+function renderKanban(el, l){
+  const bar = `<div class="seg" role="tablist"><button class="${state.kview==='etapa'?'on':''}" data-kview="etapa">Etapa do mês</button><button class="${state.kview==='situacao'?'on':''}" data-kview="situacao">Situação da carteira</button></div>`;
+  if (state.kview === 'situacao') return renderKanbanSit(el, l, bar);
+  const c = state.ctrlComp;
+  const lista = l.filter(e => (e.period||'') !== 'Trimestral' || ehTri(c));
+  const st = e => statusCtrl(state.ctrl[e.id]);
+  const done = lista.filter(e => st(e) === 'ok').length, pct = lista.length ? Math.round(done/lista.length*100) : 0;
+  const quemTxt = u => u ? `<span class="uid" data-uid="${esc(u)}"></span>` : '';   // preencherNomes() acrescenta " · Nome"
+  const card = e => { const k = state.ctrl[e.id] || {}, s = st(e), cb = k.cobrancas || [], ult = cb[cb.length-1], i = ORD[s];
+    let info = '';
+    if (s === 'cobrar') info = `<span class="muted small">não cobrado</span><button class="mini" data-cobrar="${esc(e.id)}">+ Cobrei</button>`;
+    if (s === 'docs') info = `<span class="info"><b>${cb.length}×</b> cobrado · últ. ${fmtD(ult.d)}${quemTxt(ult.u)}</span><button class="mini" data-cobrar="${esc(e.id)}" title="Registrar nova cobrança">+ de novo</button>`;
+    if (s === 'fechar') info = `<span class="info">Docs ${fmtD(k.docsEm)}${quemTxt(k.docsPor)}</span>`;
+    if (s === 'ok') info = `<span class="info">${k.sm ? 'Sem movimento' : 'Fechado ' + fmtD(k.fechadoEm)}${k.sm ? '' : quemTxt(k.fechadoPor)}</span>`;
+    return `<article class="card" draggable="true" data-ecard="${esc(e.id)}">
+      <div class="card-top"><span>Cód ${esc(e.cod)} · ${esc(e.period||'Mensal')}</span>${e.prior==1?'<span class="tag p1">P1</span>':''}</div>
+      <h4>${esc(e.empresa)}</h4>
+      <div class="meta">${tagTrib(e.trib)}<span class="resp ${e.novoResp?'':'vazio'}">${esc(e.novoResp || 'sem responsável')}</span>${k.obs ? `<span title="${esc(k.obs)}">✎ obs.</span>` : ''}</div>
+      <div class="acao">${info}<span class="mvb"><button data-emv="-1" ${i===0?'disabled':''} title="Voltar etapa">‹</button><button data-emv="1" ${i===3?'disabled':''} title="Avançar etapa">›</button></span></div></article>`; };
+  el.innerHTML = `<div class="panel ctrl-bar"><div class="kbar">${bar}
+      <div class="ctrl-comp"><button class="btn ghost sm" data-comp="-1" title="Mês anterior">‹</button><h3>${nomeComp(c)}</h3><input type="month" id="ctrlComp" value="${c}" aria-label="Competência"><button class="btn ghost sm" data-comp="1" title="Próximo mês">›</button></div>
+      <div class="kprog"><div class="prog" style="flex:1"><div style="width:${pct}%"></div></div><span class="small"><b>${done}</b> de ${lista.length} (${pct}%)</span></div></div>
+      <div class="small muted">${ehTri(c) ? `Inclui as trimestrais (${triLabel(c)}).` : 'As trimestrais aparecem só em março, junho, setembro e dezembro.'} Arraste o card para a próxima etapa — a data e quem fez ficam registrados.</div></div>
+    ${db && !state.ctrlOk ? '<p class="hint">Carregando o controle do mês…</p>' : ''}
+    <div class="board b4" style="--nc:4">${ETAPAS.map(([key, lbl, cls]) => { const cs = lista.filter(e => st(e) === key);
+      return `<div class="col ${cls}"><div class="col-head"><span>${lbl}</span><b>${cs.length}</b></div>
+        <div class="col-body" data-edrop="${key}">${cs.map(card).join('') || '<div class="col-empty">Nenhuma empresa</div>'}</div></div>`; }).join('')}</div>
+    <p class="hint">Toque no card para ver o mês completo (cobranças, docs, fechamento, S/M e observação). Voltar um card de etapa desfaz as marcações das etapas seguintes.</p>`;
+  preencherNomes();
+}
+function renderKanbanSit(el, l, bar){
+  const cols = ['', ...SITUACOES];
+  el.innerHTML = `<div class="kbar">${bar}<span class="small muted">Situação geral de cada empresa (preenchida no levantamento). Arraste para mudar.</span></div>
+  <div class="board">${cols.map(s => { const lista = l.filter(e => (e.situacao||'') === s);
+    return `<div class="col ${SIT_CLS[s]}"><div class="col-head"><span>${s || 'Não preenchido'}</span><b>${lista.length}</b></div>
+    <div class="col-body" data-drop="${esc(s)}">${lista.map(e => `<article class="card" draggable="true" data-card="${esc(e.id)}">
+      <div class="card-top"><span>Cód ${esc(e.cod)}${e.grupo?' · '+esc(e.grupo):''}</span>${e.prior==1?'<span class="tag p1">P1</span>':''}</div>
+      <h4>${esc(e.empresa)}</h4>
+      <div class="meta">${tagTrib(e.trib)}<span>${esc(e.period||'')}</span><span class="resp ${e.novoResp?'':'vazio'}">${esc(e.novoResp || 'sem responsável')}</span></div>
+      <div class="meta" style="margin-top:6px">${badgeAtraso(e)}</div></article>`).join('') || '<div class="col-empty">Arraste empresas para cá</div>'}</div></div>`; }).join('')}</div>
+    <p class="hint">No celular, toque no card e altere a situação no formulário.</p>`;
+}
+
+async function moverEtapa(empId, destino){
+  const k = state.ctrl[empId] || {}, atual = statusCtrl(state.ctrl[empId]);
+  if (atual === destino) return;
+  const hj = hojeISO(), u = state.uid || '';
+  let patch;
+  if (destino === 'cobrar') {
+    if ((k.cobrancas||[]).length && !(await confirmar('Voltar para "Falta cobrar"?', `Isso apaga as ${k.cobrancas.length} cobrança(s) registradas e as marcações de docs/fechamento deste mês.`, 'Voltar'))) return;
+    patch = {cobrancas: [], docsEm:'', docsPor:'', fechadoEm:'', fechadoPor:'', sm:false};
+  } else if (destino === 'docs') {
+    patch = {docsEm:'', docsPor:'', fechadoEm:'', fechadoPor:'', sm:false};
+    if (!(k.cobrancas||[]).length) patch.cobrancas = [{d: hj, u}];
+  } else if (destino === 'fechar') {
+    patch = {docsEm: k.docsEm || hj, docsPor: k.docsEm ? (k.docsPor||'') : u, fechadoEm:'', fechadoPor:'', sm:false};
+  } else {
+    patch = {fechadoEm: hj, fechadoPor: u, docsEm: k.docsEm || hj, docsPor: k.docsEm ? (k.docsPor||'') : u};
+  }
+  const ok = await putCtrl(empId, patch);
+  if (ok && destino === 'ok') {
+    const e = state.empresas.find(x => x.id === empId);
+    if (e && (!e.ultFechReal || e.ultFechReal < state.ctrlComp)) await campoEmpresa(empId, {ultFechReal: state.ctrlComp});
+  }
+  if (ok) toast({cobrar:'Voltou para "Falta cobrar"', docs:'Cobrança registrada — aguardando docs', fechar:'Docs recebidos — falta fechar', ok:'Fechamento concluído'}[destino]);
+}
+function confirmar(titulo, texto, rotuloOk){
+  return new Promise(res => {
+    abrirModal(`<h3>${esc(titulo)}</h3><p class="subt">${esc(texto)}</p><div class="mf"><span class="sp"></span><button class="btn ghost" id="cfNao">Cancelar</button><button class="btn danger" id="cfSim">${esc(rotuloOk)}</button></div>`);
+    $('#cfNao').onclick = () => { fecharModal(); res(false); };
+    $('#cfSim').onclick = () => { fecharModal(); res(true); };
+  });
+}
+function abrirMes(empId){
+  const e = state.empresas.find(x => x.id === empId); if (!e) return;
+  const k = state.ctrl[empId] || {}, cb = k.cobrancas || [];
+  const nome = u => u ? `<span class="uid" data-uid="${esc(u)}"></span>` : '';
+  abrirModal(`<h3>${esc(e.empresa)}</h3><p class="subt">${nomeComp(state.ctrlComp)} · Cód ${esc(e.cod)} · ${esc(e.period||'Mensal')} · ${esc(e.novoResp||'sem responsável')}</p>
+    <div class="mes-box">
+      <div class="mes-item"><h5>Cobrança de documentos</h5>
+        <div class="cob"><button class="btn primary sm" id="mCobrar">+ Cobrei hoje</button>${cb.length ? '<button class="btn ghost sm" id="mDesf">Desfazer última</button>' : ''}</div>
+        ${cb.length ? `<ol class="hist">${cb.map(c => `<li>${fmtD(c.d)}${nome(c.u)}</li>`).join('')}</ol>` : '<p class="hint">Nenhuma cobrança registrada.</p>'}</div>
+      <div class="mes-item"><h5>Andamento</h5>
+        <label class="ck" style="margin-bottom:8px"><input type="checkbox" id="mDocs" ${k.docsEm?'checked':''}> Docs recebidos ${k.docsEm ? `<span class="small muted">${fmtD(k.docsEm)}${nome(k.docsPor)}</span>` : ''}</label>
+        <label class="ck" style="margin-bottom:8px"><input type="checkbox" id="mFech" ${k.fechadoEm?'checked':''}> Fechamento concluído ${k.fechadoEm ? `<span class="small muted">${fmtD(k.fechadoEm)}${nome(k.fechadoPor)}</span>` : ''}</label>
+        <label class="ck"><input type="checkbox" id="mSm" ${k.sm?'checked':''}> Sem movimento no período</label></div>
+    </div>
+    <label class="field" style="margin-top:12px">Observação do mês<textarea id="mObs" rows="2" maxlength="300" placeholder="Ex.: faltou extrato Itaú; cliente pediu prazo até dia 20">${esc(k.obs||'')}</textarea></label>
+    <div class="mf"><button class="btn ghost" id="mCad">Ver cadastro da empresa</button><span class="sp"></span><button class="btn ghost" data-close>Fechar</button><button class="btn primary" id="mObsOk">Salvar observação</button></div>`);
+  preencherNomes('#modalCard');
+  const refaz = () => { if (!$('#modal').classList.contains('hidden')) abrirMes(empId); };
+  $('#mCobrar').onclick = async () => { await cobrar(empId); refaz(); };
+  if ($('#mDesf')) $('#mDesf').onclick = async () => { await desfazerCobranca(empId); refaz(); };
+  $('#mDocs').onchange = async ev => { await marcar(empId, 'docs', ev.target.checked); refaz(); };
+  $('#mFech').onchange = async ev => { await marcar(empId, 'fech', ev.target.checked); refaz(); };
+  $('#mSm').onchange = async ev => { await marcar(empId, 'sm', ev.target.checked); refaz(); };
+  $('#mObsOk').onclick = async () => { if (await putCtrl(empId, {obs: $('#mObs').value.trim()})) { toast('Observação salva'); fecharModal(); } };
+  $('#mCad').onclick = () => { fecharModal(); abrirEmpresa(empId); };
+}
+
+function renderResumo(el){
+  const l = state.empresas, cols = [...RESPONSAVEIS, '(vazio)'];
+  const conta = (sit, r) => l.filter(e => (e.situacao||'(vazio)') === sit && (e.novoResp||'(vazio)') === r).length;
+  const linhas = [...SITUACOES, '(vazio)'];
+  const mx = `<table class="mx"><thead><tr><th>Situação</th>${cols.map(c => `<th>${c==='(vazio)'?'Sem resp.':esc(c)}</th>`).join('')}<th>Total</th></tr></thead><tbody>
+    ${linhas.map(s => { const vs = cols.map(c => conta(s,c)); return `<tr><td><span class="pill ${SIT_CLS[s==='(vazio)'?'':s]}">${s==='(vazio)'?'Não preenchida':esc(s)}</span></td>${vs.map((v,i) => `<td class="n ${v?'':'z'}" data-mx-s="${esc(s)}" data-mx-r="${esc(cols[i])}">${v}</td>`).join('')}<td><b>${vs.reduce((a,b)=>a+b,0)}</b></td></tr>`; }).join('')}
+    <tr class="tot"><td>Total</td>${cols.map(c => `<td>${l.filter(e => (e.novoResp||'(vazio)')===c).length}</td>`).join('')}<td>${l.length}</td></tr></tbody></table>`;
+  const antigos = unicos('respAntigo');
+  const tb2 = `<table class="mx"><thead><tr><th>Resp. (planilha antiga)</th><th>Empresas</th><th>Nenhum mês fechado</th><th>Atrasadas hoje</th></tr></thead><tbody>
+    ${antigos.map(r => { const g = l.filter(e => (e.respAntigo||'(vazio)')===r); return `<tr><td>${esc(r)}</td><td>${g.length}</td><td>${g.filter(e => String(e.ultFechAntigo||'')==='Nenhum').length}</td><td>${g.filter(atrasada).length}</td></tr>`; }).join('')}</tbody></table>`;
+  const tribs = unicos('trib'), pers = unicos('period');
+  const tb3 = `<table class="mx"><thead><tr><th>Tributação</th>${pers.map(p => `<th>${esc(p)}</th>`).join('')}<th>Total</th></tr></thead><tbody>
+    ${tribs.map(t => { const vs = pers.map(p => l.filter(e => (e.trib||'(vazio)')===t && (e.period||'(vazio)')===p).length); return `<tr><td>${esc(t)}</td>${vs.map(v => `<td class="${v?'':'z'}">${v}</td>`).join('')}<td><b>${vs.reduce((a,b)=>a+b,0)}</b></td></tr>`; }).join('')}</tbody></table>`;
+  const semTrib = l.filter(e => !e.trib).length;
+  el.innerHTML = `${semTrib ? `<div class="alerta"><b>${semTrib} empresa(s) sem tributação, periodicidade e responsável</b> (cód. 290 a 300). Na planilha Excel elas estão nas linhas 174–184, fora do alcance das listas suspensas e das fórmulas da aba Resumo (que vão só até a linha 173) — por isso não aparecem nos totais de lá. <a href="#lista" data-ver-semtrib>Ver essas empresas</a></div>` : ''}
+  <div class="grid2"><div class="panel"><h3>Situação × Novo responsável</h3><div style="overflow:auto">${mx}</div><p class="hint">Clique num número para abrir a lista filtrada.</p></div>
+  <div><div class="panel" style="margin-bottom:16px"><h3>Carteira pela planilha antiga</h3><div style="overflow:auto">${tb2}</div></div>
+  <div class="panel"><h3>Tributação × Periodicidade</h3><div style="overflow:auto">${tb3}</div></div></div></div>`;
+}
+
+function renderPendencias(el){
+  const l = state.pend.slice().sort((a,b) => (a.ordem??999)-(b.ordem??999) || String(a.id).localeCompare(String(b.id)));
+  const sel = (id,c,vals,v) => `<select class="cell-sel" data-pend="${esc(id)}" data-campo="${c}"><option value="">—</option>${vals.map(x => `<option ${x===v?'selected':''}>${esc(x)}</option>`).join('')}</select>`;
+  el.innerHTML = `<div class="panel" style="margin-bottom:16px"><h3>Nova pendência</h3>
+    <div class="three"><label class="field">Tipo<select id="pTipo"><option>Risco técnico</option><option>Cadastro</option><option>Controle</option></select></label>
+    <label class="field">Onde<input id="pOnde" maxlength="120" placeholder="Empresa, aba ou processo"></label>
+    <label class="field">Responsável<select id="pResp"><option value="">—</option>${RESPONSAVEIS.map(r=>`<option>${r}</option>`).join('')}</select></label></div>
+    <label class="field">O que<textarea id="pOque" rows="2" maxlength="1000"></textarea></label>
+    <button class="btn primary" id="pAdd">Adicionar</button></div>
+    <div class="tablewrap"><table><thead><tr><th>Tipo</th><th>Onde</th><th>O que</th><th class="y">Responsável</th><th class="y">Status</th><th></th></tr></thead><tbody>
+    ${l.map(p => `<tr class="row"><td class="small"><b>${esc(p.tipo)}</b></td><td class="small">${esc(p.onde)}</td><td class="small" style="min-width:320px">${esc(p.oque)}</td>
+      <td>${sel(p.id,'resp',RESPONSAVEIS,p.resp)}</td><td>${sel(p.id,'status',PEND_STATUS,p.status)}</td>
+      <td><button class="btn danger sm" data-del-pend="${esc(p.id)}">Excluir</button></td></tr>`).join('') || '<tr><td colspan="6" class="muted">Nenhuma pendência.</td></tr>'}
+    </tbody></table></div>`;
+  $('#pAdd').onclick = async () => { const oque = $('#pOque').value.trim(); if (!oque) return toast('Descreva a pendência.','err');
+    if (await gravar('pendencias', 'p' + Date.now().toString(36), {tipo:$('#pTipo').value, onde:$('#pOnde').value.trim(), oque, resp:$('#pResp').value, status:'Pendente', ordem: Date.now()}, true)) toast('Pendência adicionada'); };
+}
+
+/* ============ Modal de empresa ============ */
+function abrirModal(html){ $('#modalCard').innerHTML = html; $('#modal').classList.remove('hidden'); }
+function fecharModal(){ $('#modal').classList.add('hidden'); $('#modalCard').innerHTML=''; if (renderPendente) render(); }
+const CAMPOS_ANTIGOS = [['empresa','Empresa'],['grupo','Grupo'],['trib','Tributação'],['period','Periodicidade'],['respAntigo','Responsável (antigo)'],['prior','Prioridade (1/2)'],['bancos','Bancos (conta corrente)'],['aplicacoes','Aplicações'],['caixa','Fech. por caixa?'],['canal','Canal de envio hoje'],['ultDocAntigo','Último doc OK (antigo)'],['ultFechAntigo','Último mês fechado (antigo)']];
+function abrirEmpresa(id){
+  const e = state.empresas.find(x => x.id === id); if (!e) return;
+  const inp = (k,l,extra='') => `<label class="field">${l}<input data-f="${k}" value="${esc(e[k]??'')}" ${extra}></label>`;
+  const sel = (k,l,vals) => `<label class="field y">${l}<select data-f="${k}"><option value="">—</option>${vals.map(v=>`<option ${v===e[k]?'selected':''}>${esc(v)}</option>`).join('')}</select></label>`;
+  abrirModal(`<h3>${esc(e.empresa)}</h3><p class="subt">Cód ${esc(e.cod)} · ${esc(e.trib||'sem tributação')} · ${esc(e.period||'sem periodicidade')} · ${badgeAtraso(e)}</p>
+    <div class="sec">Levantamento</div>
+    <div class="three">${sel('novoResp','Novo responsável',RESPONSAVEIS)}
+      <label class="field y">Último mês fechado REAL (Domínio)<input type="month" data-f="ultFechReal" value="${esc(e.ultFechReal||'')}"></label>
+      ${sel('situacao','Situação',SITUACOES)}</div>
+    <div class="three"><label class="field y">Contato p/ cobrança<input data-f="contato" value="${esc(e.contato||'')}" placeholder="Nome (cargo)"></label>
+      <label class="field y">E-mail p/ cobrança<input type="email" data-f="email" value="${esc(e.email||'')}"></label>
+      <label class="field y">WhatsApp<input data-f="whatsapp" value="${esc(e.whatsapp||'')}" placeholder="(11) 9xxxx-xxxx"></label></div>
+    <div class="two"><label class="field y">Outros docs (cartão, maquininha etc.)<input data-f="outrosDocs" value="${esc(e.outrosDocs||'')}"></label>
+      ${sel('vincular','Vincular no Processos?',['Sim','Não'])}</div>
+    <label class="field y">Observações<textarea data-f="obs" rows="3">${esc(e.obs||'')}</textarea></label>
+    <div class="sec">Da planilha antiga — conferir</div>
+    <div class="three">${CAMPOS_ANTIGOS.map(([k,l]) => inp(k,l)).join('')}</div>
+    <div class="mf"><span class="hint">${e.atualizadoEm ? 'Última alteração: ' + new Date(e.atualizadoEm).toLocaleString('pt-BR') : 'Sem alterações desde a importação.'}</span><span class="sp"></span><button class="btn ghost" data-close>Cancelar</button><button class="btn primary" id="eSalvar">Salvar</button></div>`);
+  $('#eSalvar').onclick = async () => {
+    const mud = {};
+    document.querySelectorAll('#modalCard [data-f]').forEach(i => { let v = i.value.trim(); const k = i.dataset.f;
+      if (k==='prior') v = v ? Number(v) : ''; if (String(v) !== String(e[k] ?? '')) mud[k] = v; });
+    if (!mud.empresa && 'empresa' in mud) return toast('O nome da empresa não pode ficar vazio.','err');
+    if (!Object.keys(mud).length) return fecharModal();
+    if (await campoEmpresa(id, mud)) { fecharModal(); toast('Empresa atualizada'); }
+  };
+}
+
+/* ============ Controle mensal ============ */
+const hojeISO = () => { const d = new Date(); return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`; };
+const fmtD = s => s ? `${s.slice(8,10)}/${s.slice(5,7)}` : '';
+function addMes(c, n){ let [y,m] = c.split('-').map(Number); m += n; while (m > 12){ m -= 12; y++; } while (m < 1){ m += 12; y--; } return `${y}-${pad(m)}`; }
+const ehTri = c => [3,6,9,12].includes(Number(c.slice(5,7)));
+const triLabel = c => `${Number(c.slice(5,7))/3}º tri/${c.slice(2,4)}`;
+const nomeComp = c => { const n = new Date(Number(c.slice(0,4)), Number(c.slice(5,7))-1, 1).toLocaleDateString('pt-BR',{month:'long', year:'numeric'}); return n.charAt(0).toUpperCase() + n.slice(1); };
+function statusCtrl(k){ if (!k) return 'cobrar'; if (k.fechadoEm || k.sm) return 'ok'; if (k.docsEm) return 'fechar'; if ((k.cobrancas||[]).length) return 'docs'; return 'cobrar'; }
+let unsubCtrl = null;
+function localCtrl(){ state.ctrl = Object.fromEntries(Object.entries(local.controles||{}).filter(([,d]) => d.comp === state.ctrlComp).map(([id,d]) => [d.empId, {id, ...d}])); state.ctrlOk = true; }
+function assinarCtrl(){
+  if (!db) { localCtrl(); return; }
+  if (unsubCtrl) unsubCtrl();
+  state.ctrl = {}; state.ctrlOk = false;
+  const comp = state.ctrlComp;
+  unsubCtrl = db.collection('controles').where('comp','==',comp).onSnapshot(s => {
+    if (comp !== state.ctrlComp) return;
+    state.ctrl = Object.fromEntries(s.docs.map(d => [d.data().empId, {id:d.id, ...d.data()}]));
+    if (!s.metadata.fromCache) state.ctrlOk = true; render();
+  }, () => toast('Não foi possível carregar o controle mensal.','err'));
+}
+function setComp(c){ state.ctrlComp = c; state.ctrlF = ''; assinarCtrl(); render(); }
+async function putCtrl(empId, patch){
+  const comp = state.ctrlComp, id = `${empId}_${comp}`, atual = state.ctrl[empId], ts = {atualizadoEm: new Date().toISOString()};
+  if (atual) return gravar('controles', id, {...patch, ...ts}, false);
+  return gravar('controles', id, {empId, comp, cobrancas:[], docsEm:'', docsPor:'', fechadoEm:'', fechadoPor:'', sm:false, obs:'', ...patch, ...ts}, true);
+}
+async function cobrar(empId){
+  const k = state.ctrl[empId]; const lista = [...((k && k.cobrancas) || []), {d: hojeISO(), u: state.uid || ''}];
+  if (await putCtrl(empId, {cobrancas: lista})) toast(`Cobrança registrada (${lista.length}ª)`);
+}
+async function desfazerCobranca(empId){
+  const k = state.ctrl[empId]; if (!k || !(k.cobrancas||[]).length) return;
+  if (await putCtrl(empId, {cobrancas: k.cobrancas.slice(0,-1)})) toast('Última cobrança removida');
+}
+async function marcar(empId, tipo, on){
+  if (tipo === 'sm') return putCtrl(empId, {sm: on});
+  const campo = tipo === 'docs' ? 'docsEm' : 'fechadoEm', por = tipo === 'docs' ? 'docsPor' : 'fechadoPor';
+  const ok = await putCtrl(empId, {[campo]: on ? hojeISO() : '', [por]: on ? (state.uid || '') : ''});
+  if (ok && tipo === 'fech' && on) {
+    const e = state.empresas.find(x => x.id === empId);
+    if (e && (!e.ultFechReal || e.ultFechReal < state.ctrlComp)) await campoEmpresa(empId, {ultFechReal: state.ctrlComp});
+  }
+}
+async function preencherNomes(escopo){
+  if (!state.user) return;
+  const spans = [...document.querySelectorAll((escopo || '#conteudo') + ' .uid[data-uid]')].filter(s => s.dataset.uid);
+  const ids = [...new Set(spans.map(s => s.dataset.uid))]; if (!ids.length) return;
+  try { const ps = await state.user.profiles(ids);
+    spans.forEach(s => { const n = (ps[s.dataset.uid] && ps[s.dataset.uid].name) || ''; s.textContent = n ? ' · ' + n.split(' ')[0] : ''; }); } catch(e){}
+}
+function renderControle(el){
+  const c = state.ctrlComp;
+  const lista = ordenar(filtrar()).filter(e => (e.period||'') !== 'Trimestral' || ehTri(c));
+  const st = e => statusCtrl(state.ctrl[e.id]);
+  const cont = {cobrar:0, docs:0, fechar:0, ok:0}; lista.forEach(e => cont[st(e)]++);
+  const vis = state.ctrlF ? lista.filter(e => st(e) === state.ctrlF) : lista;
+  const pct = lista.length ? Math.round(cont.ok / lista.length * 100) : 0;
+  const nota = ehTri(c) ? `Inclui as trimestrais (${triLabel(c)}).` : 'As trimestrais aparecem só em março, junho, setembro e dezembro.';
+  const ck = (e, tipo, data, por, on) => `<label class="ck"><input type="checkbox" data-ck="${tipo}" data-emp="${esc(e.id)}" ${on?'checked':''}>${data ? `<span class="small">${fmtD(data)}<span class="uid" data-uid="${esc(por||'')}"></span></span>` : ''}</label>`;
+  el.innerHTML = `<div class="panel ctrl-bar">
+    <div class="ctrl-comp"><button class="btn ghost sm" data-comp="-1" title="Mês anterior">‹</button>
+      <h3>${nomeComp(c)}</h3><input type="month" id="ctrlComp" value="${c}" aria-label="Competência">
+      <button class="btn ghost sm" data-comp="1" title="Próximo mês">›</button><span class="muted small">${nota}</span></div>
+    <div class="prog"><div style="width:${pct}%"></div></div>
+    <div class="small muted">${cont.ok} de ${lista.length} empresas concluídas (${pct}%)${state.f.novoResp ? ' · responsável: ' + esc(state.f.novoResp) : ''}</div>
+    <div class="ctrl-chips">${[['cobrar','Falta cobrar','s-nada'],['docs','Cobrado, aguardando docs','s-doc'],['fechar','Docs ok, falta fechar','s-fech'],['ok','Concluídas','s-ok']].map(([k,l,cls]) => `<button class="cchip ${cls} ${state.ctrlF===k?'on':''}" data-cf="${k}">${l} <b>${cont[k]}</b></button>`).join('')}</div>
+  </div>
+  ${db && !state.ctrlOk ? '<p class="hint">Carregando o controle do mês…</p>' : ''}
+  <div class="tablewrap"><table class="ctrl"><thead><tr><th>Empresa</th><th>Responsável</th><th class="y">Cobrança de documentos</th><th class="y">Docs recebidos</th><th class="y">Fechamento concluído</th><th class="y" title="Sem movimento no período">S/M</th><th class="y">Obs. do mês</th></tr></thead><tbody>
+  ${vis.map(e => { const k = state.ctrl[e.id] || {}; const cb = k.cobrancas || []; const ult = cb[cb.length-1];
+    return `<tr class="row st-${st(e)}">
+      <td class="nome" data-abrir="${esc(e.id)}"><b>${esc(e.empresa)}</b><div class="muted small">Cód ${esc(e.cod)} · ${esc(e.period||'—')} ${tagTrib(e.trib)}</div></td>
+      <td class="small">${e.novoResp ? esc(e.novoResp) : '<span class="resp vazio">—</span>'}</td>
+      <td><div class="cob"><button class="btn ghost sm" data-cobrar="${esc(e.id)}">+ Cobrei</button>${ult ? `<span class="small"><b>${cb.length}×</b> · últ. ${fmtD(ult.d)}<span class="uid" data-uid="${esc(ult.u||'')}"></span></span><button class="undo" data-desfazer="${esc(e.id)}" title="Desfazer a última cobrança">↶</button>` : '<span class="muted small">não cobrado</span>'}</div></td>
+      <td>${ck(e,'docs',k.docsEm,k.docsPor,!!k.docsEm)}</td>
+      <td>${ck(e,'fech',k.fechadoEm,k.fechadoPor,!!k.fechadoEm)}</td>
+      <td><input type="checkbox" data-ck="sm" data-emp="${esc(e.id)}" ${k.sm?'checked':''} title="Sem movimento"></td>
+      <td><input class="cell-in obs" data-obs="${esc(e.id)}" value="${esc(k.obs||'')}" maxlength="300" placeholder="—"></td></tr>`; }).join('') || '<tr><td colspan="7" class="muted">Nenhuma empresa nesse filtro.</td></tr>'}
+  </tbody></table></div>
+  <p class="hint">Cada clique em "+ Cobrei" registra uma cobrança com a data (e quem cobrou). Marcar "Fechamento concluído" atualiza o "Último mês fechado REAL" da empresa. S/M = sem movimento, conta como concluída.</p>`;
+  preencherNomes();
+}
+
+/* ============ Exportar ============ */
+function linhasExport(){
+  return ordenar(state.empresas.slice()).sort((a,b)=>(a.cod||0)-(b.cod||0)).map(e => COLS_EXPORT.map(([k]) => k==='ultFechReal' ? fmtMes(e[k]) : (e[k] ?? '')));
+}
+function abrirExport(){
+  abrirModal(`<h3>Importar e exportar</h3><p class="subt">O backup JSON leva <b>tudo</b>: empresas, controle mensal de todas as competências, pendências e configuração. Os formatos Excel levam só a carteira.</p>
+    <div class="sec">Backup completo (JSON)</div>
+    <p class="hint" style="margin-top:0">Guarde um backup por mês, ou mande o arquivo para quem vai restaurar os dados em outro painel. O arquivo tem dados de clientes: não publique nem suba no GitHub.</p>
+    <div class="mf" style="margin-top:8px"><button class="btn primary" id="jExp">Baixar backup JSON</button><button class="btn ghost" id="jImp">Importar planilha ou backup…</button></div>
+    <div class="sec">Carteira para Excel — colar na planilha original</div>
+    <p class="hint" style="margin-top:0">Copia as 22 colunas na mesma ordem da aba "Carteira Geral", sem cabeçalho, ordenadas por Cód. No Excel, clique na célula <b>A5</b> e cole.</p>
+    <button class="btn primary" id="xCopiar" style="margin-top:8px">Copiar para o Excel</button>
+    <div class="sec">Opção 2 — baixar CSV</div>
+    <p class="hint" style="margin-top:0">Arquivo com cabeçalho, separado por ponto e vírgula (abre direto no Excel em português).</p>
+    <button class="btn ghost" id="xCsv" style="margin-top:8px">Baixar CSV</button>
+    <div class="mf"><span class="sp"></span><button class="btn ghost" data-close>Fechar</button></div>`);
+  $('#xCopiar').onclick = async () => {
+    const tsv = linhasExport().map(r => r.map(v => String(v).replace(/[\t\r\n]+/g,' ')).join('\t')).join('\n');
+    try { await navigator.clipboard.writeText(tsv); toast(`${state.empresas.length} linhas copiadas — cole na célula A5`); }
+    catch(e){ toast('O navegador bloqueou a cópia. Use o CSV.','err'); }
+  };
+  $('#xCsv').onclick = async () => {
+    const q = v => { v = String(v ?? ''); return /[;"\n]/.test(v) ? `"${v.replace(/"/g,'""')}"` : v; };
+    const csv = '﻿' + [COLS_EXPORT.map(c=>c[1]), ...linhasExport()].map(r => r.map(q).join(';')).join('\r\n');
+    let dl = null; try { dl = await window.claude.use('downloads'); } catch(e){}
+    if (!dl) return toast('Download indisponível aqui — use "Copiar para o Excel".','err');
+    try { await dl.save({filename:`carteira-geral-${new Date().toISOString().slice(0,10)}.csv`, data: csv}); }
+    catch(e){ toast('Download cancelado ou bloqueado.','err'); }
+  };
+  $('#jExp').onclick = exportarJSON;
+  $('#jImp').onclick = abrirImportJSON;
+}
+
+/* ============ Backup JSON (exportar / importar) ============ */
+const FORMATO = 'carteira-geral-pmc', VERSAO_FORMATO = 1;
+const ID_OK = /^[A-Za-z0-9_\-.~:@+]{1,200}$/;
+const COLECOES = ['empresas', 'controles', 'pendencias'];
+async function lerColecao(col){
+  if (db) { const s = await db.collection(col).get(); return s.docs.map(d => ({id: d.id, ...d.data()})); }
+  return Object.entries(local[col] || {}).map(([id, d]) => ({id, ...d}));
+}
+async function coletarTudo(){
+  const [empresas, controles, pendencias] = await Promise.all(COLECOES.map(lerColecao));
+  return {formato: FORMATO, versao: VERSAO_FORMATO, exportadoEm: new Date().toISOString(),
+    contagem: {empresas: empresas.length, controles: controles.length, pendencias: pendencias.length},
+    empresas, controles, pendencias, config: {ref: state.ref}};
+}
+async function exportarJSON(){
+  const b = $('#jExp'); b.disabled = true; b.textContent = 'Preparando…';
+  try {
+    const dados = await coletarTudo(), json = JSON.stringify(dados, null, 1);
+    const nome = `carteira-geral-backup-${hojeISO()}.json`;
+    let dl = null; try { dl = await window.claude.use('downloads'); } catch(e){}
+    if (dl) {
+      try { await dl.save({filename: nome, data: json}); toast(`Backup gerado: ${dados.contagem.empresas} empresas, ${dados.contagem.controles} registros mensais`); }
+      catch(e){ toast(e && e.code === 'declined' ? 'Download cancelado.' : 'Não foi possível baixar o arquivo.', 'err'); }
+    } else {
+      try { await navigator.clipboard.writeText(json); toast('Download indisponível aqui: o JSON foi copiado. Cole num arquivo .json.'); }
+      catch(e){ toast('Download e cópia indisponíveis neste navegador.','err'); }
+    }
+  } catch(e){ toast('Não foi possível ler os dados para o backup.','err'); }
+  finally { if ($('#jExp')) { b.disabled = false; b.textContent = 'Baixar backup JSON'; } }
+}
+function validarBackup(d){
+  if (Array.isArray(d)) d = {formato: FORMATO, versao: VERSAO_FORMATO, exportadoEm: new Date().toISOString(), empresas: d, controles: [], pendencias: [], parcial: true};
+  if (!d || typeof d !== 'object' || d.formato !== FORMATO) throw new Error('Este arquivo não é um backup da Carteira Geral.');
+  if (Number(d.versao) > VERSAO_FORMATO) throw new Error('Backup de uma versão mais nova do painel. Atualize o painel antes de importar.');
+  for (const col of COLECOES) {
+    if (!Array.isArray(d[col])) throw new Error(`O backup não tem a lista "${col}".`);
+    d[col].forEach((o, i) => {
+      if (!o || typeof o !== 'object' || Array.isArray(o)) throw new Error(`${col}: item ${i+1} inválido.`);
+      if (typeof o.id !== 'string' || !ID_OK.test(o.id)) throw new Error(`${col}: item ${i+1} com ID inválido.`);
+      if (JSON.stringify(o).length > 200000) throw new Error(`${col}: item ${o.id} grande demais.`);
+    });
+  }
+  d.empresas.forEach(e => { if (typeof e.empresa !== 'string' || !e.empresa.trim()) throw new Error(`Empresa ${e.id} sem nome.`); if (NOME_ANTIGO[e.novoResp]) e.novoResp = NOME_ANTIGO[e.novoResp]; });
+  d.pendencias.forEach(p => { if (NOME_ANTIGO[p.resp]) p.resp = NOME_ANTIGO[p.resp]; });
+  d.controles.forEach(c => { ['docsPor','fechadoPor'].forEach(k => { if (NOME_ANTIGO[c[k]]) c[k] = NOME_ANTIGO[c[k]]; }); (c.cobrancas || []).forEach(x => { if (NOME_ANTIGO[x.u]) x.u = NOME_ANTIGO[x.u]; }); });
+  d.controles.forEach(c => { if (typeof c.empId !== 'string' || !/^\d{4}-\d{2}$/.test(String(c.comp||''))) throw new Error(`Controle ${c.id} sem empresa ou competência válida.`); });
+  return d;
+}
+function abrirImportJSON(){
+  abrirModal(`<h3>Importar dados</h3><p class="subt"><b>Planilha .xlsx</b> no formato do Levantamento Carteira Geral: cadastra as empresas novas e completa as existentes, sem apagar nada do que já foi preenchido no painel. <b>Backup .json</b>: restaura empresas, controle mensal, pendências e configuração.</p>
+    <label class="field">Arquivo (.xlsx ou .json)<input type="file" id="iArq" accept=".json,.xlsx,application/json,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"></label>
+    <div class="field">Modo
+      <label class="ck"><input type="radio" name="iModo" value="mesclar" checked> <span><b>Mesclar</b>: adiciona e atualiza os registros do arquivo; não apaga nada que já existe</span></label>
+      <label class="ck"><input type="radio" name="iModo" value="substituir"> <span><b>Substituir tudo</b>: deixa o painel igual ao arquivo (apaga o que não estiver nele)</span></label></div>
+    <div id="iPrev" class="hint">Escolha o arquivo para ver o resumo antes de importar.</div>
+    <div class="progress hidden" id="iProg" style="height:6px;background:var(--line);border-radius:6px;overflow:hidden;margin-top:12px"><div style="height:100%;background:var(--green);width:0"></div></div>
+    <div class="mf"><span class="sp"></span><button class="btn ghost" data-close>Cancelar</button><button class="btn primary" id="iOk" disabled>Importar</button></div>`);
+  let dados = null, atuais = null;
+  const prev = async () => {
+    if (!dados) return;
+    if (!atuais) { atuais = {}; for (const col of COLECOES) atuais[col] = new Set((await lerColecao(col)).map(o => o.id)); }
+    const modo = document.querySelector('input[name=iModo]:checked').value;
+    const linhas = COLECOES.map(col => { const ids = new Set(dados[col].map(o => o.id));
+      const novos = [...ids].filter(id => !atuais[col].has(id)).length, atual = ids.size - novos;
+      const apagar = modo === 'substituir' ? [...atuais[col]].filter(id => !ids.has(id)).length : 0;
+      return `<li><b>${col}</b>: ${ids.size} no arquivo — ${novos} novos, ${atual} atualizados${apagar ? `, <b style="color:var(--late)">${apagar} serão apagados</b>` : ''}</li>`; }).join('');
+    const origem = dados.parcial ? `Planilha/lista ${esc(dados.arquivo || '')} — só empresas; as existentes recebem apenas os campos preenchidos no arquivo` : `Backup de ${esc(new Date(dados.exportadoEm).toLocaleString('pt-BR'))}`;
+    $('#iPrev').innerHTML = `${origem}${dados.ignoradas ? ` · ${dados.ignoradas} linha(s) sem Cód ignorada(s)` : ''}:<ul style="margin:6px 0 0;padding-left:18px">${dados.parcial ? linhas.split('</li>')[0] + '</li>' : linhas}</ul>`;
+    $('#iOk').disabled = false;
+  };
+  $('#iArq').onchange = async ev => {
+    const f = ev.target.files[0]; dados = null; $('#iOk').disabled = true; if (!f) return;
+    try {
+      $('#iPrev').textContent = 'Lendo o arquivo…';
+      dados = /\.xlsx$/i.test(f.name) ? await lerPlanilhaLevantamento(f) : validarBackup(JSON.parse(await f.text()));
+      dados.arquivo = f.name;
+      const sub = document.querySelector('input[name=iModo][value=substituir]');
+      sub.disabled = !!dados.parcial; if (dados.parcial) document.querySelector('input[name=iModo][value=mesclar]').checked = true;
+      await prev();
+    }
+    catch(e){ $('#iPrev').innerHTML = `<span style="color:var(--late)">${esc(e.message || 'Arquivo inválido.')}</span>`; }
+  };
+  document.querySelectorAll('input[name=iModo]').forEach(r => r.onchange = prev);
+  $('#iOk').onclick = async () => {
+    const modo = document.querySelector('input[name=iModo]:checked').value;
+    const btn = $('#iOk');
+    if (modo === 'substituir' && btn.dataset.conf !== '1') {   // confirmação em 2 cliques (o painel não pode usar confirm())
+      btn.dataset.conf = '1'; btn.className = 'btn danger'; btn.textContent = 'Confirmar: apagar e substituir'; return;
+    }
+    await importarBackup(dados, modo);
+  };
+  document.querySelectorAll('input[name=iModo]').forEach(r => r.addEventListener('change', () => { const b = $('#iOk'); b.dataset.conf = ''; b.className = 'btn primary'; b.textContent = 'Importar'; }));
+}
+/* ---- Leitura da planilha "Levantamento Carteira Geral" (.xlsx) ---- */
+const CAMPOS_PLANILHA = ['cod','prior','grupo','empresa','trib','period','respAntigo','bancos','aplicacoes','caixa','canal','ultDocAntigo','ultFechAntigo',
+  'novoResp','ultFechReal','contato','email','whatsapp','outrosDocs','situacao','vincular','obs'];   // colunas A a V, na ordem da planilha
+function carregarLeitorExcel(){
+  if (window.XLSX) return Promise.resolve();
+  return new Promise((ok, falha) => { const sc = document.createElement('script');
+    sc.src = 'https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js';
+    sc.onload = ok; sc.onerror = () => falha(new Error('Não consegui carregar o leitor de Excel. Verifique a internet e tente de novo.'));
+    document.head.appendChild(sc); });
+}
+function mesDaCelula(v){
+  if (typeof v === 'number' && v > 20000) { const d = new Date(Math.round((v - 25569) * 864e5)); return `${d.getUTCFullYear()}-${pad(d.getUTCMonth()+1)}`; }
+  if (v instanceof Date) return `${v.getFullYear()}-${pad(v.getMonth()+1)}`;
+  const t = String(v || '').trim(); if (/^\d{4}-\d{2}/.test(t)) return t.slice(0,7);
+  return parseMes(t);
+}
+async function lerPlanilhaLevantamento(arquivo){
+  await carregarLeitorExcel();
+  const wb = XLSX.read(await arquivo.arrayBuffer(), {type: 'array', cellDates: true});
+  const aba = wb.SheetNames.find(n => /carteira geral/i.test(n)) || wb.SheetNames[0];
+  const linhas = XLSX.utils.sheet_to_json(wb.Sheets[aba], {header: 1, defval: '', raw: true});
+  const h = linhas.findIndex(r => String(r[3] || '').trim().toLowerCase() === 'empresa');
+  if (h < 0) throw new Error(`Não encontrei o cabeçalho "Empresa" na coluna D da aba "${aba}". Use a planilha no formato do Levantamento (colunas A a V).`);
+  const empresas = []; let ignoradas = 0; const vistos = new Set();
+  linhas.slice(h + 1).forEach(r => {
+    if (!String(r[3] || '').trim()) return;
+    const e = {};
+    CAMPOS_PLANILHA.forEach((k, i) => {
+      let v = r[i]; if (v === '' || v === null || v === undefined) return;
+      if (k === 'ultFechReal') { v = mesDaCelula(v); if (!v) return; }
+      else if (k === 'cod' || k === 'prior') { v = Number(v); if (!isFinite(v)) return; }
+      else if (v instanceof Date) v = `${MESES[v.getMonth()]}/${String(v.getFullYear()).slice(2)}`;
+      else v = String(v).trim();
+      if (k === 'novoResp') v = NOME_ANTIGO[v] || v;
+      if (k === 'novoResp' && !RESPONSAVEIS.includes(v)) return;
+      if (k === 'situacao' && !SITUACOES.includes(v)) return;
+      if (v !== '') e[k] = v;
+    });
+    if (!e.cod) { ignoradas++; return; }
+    e.id = 'e' + e.cod; if (vistos.has(e.id)) { ignoradas++; return; } vistos.add(e.id);
+    empresas.push(e);
+  });
+  if (!empresas.length) throw new Error('Nenhuma empresa com Cód encontrada na planilha.');
+  return validarBackup({formato: FORMATO, versao: VERSAO_FORMATO, exportadoEm: new Date().toISOString(), empresas, controles: [], pendencias: [], parcial: true, ignoradas});
+}
+
+/* ---- Cadastro de empresa nova ---- */
+function novaEmpresa(){
+  const proximo = state.empresas.reduce((m, e) => Math.max(m, Number(e.cod) || 0), 0) + 1;
+  const tribs = [...new Set(['Simples Nacional','Lucro Presumido','Lucro Real','MEI','Imune', ...state.empresas.map(e => e.trib).filter(Boolean)])];
+  abrirModal(`<h3>Nova empresa</h3><p class="subt">Os demais dados (bancos, contato, e-mail, observações) você completa depois, no cadastro da empresa.</p>
+    <div class="three"><label class="field">Empresa<input data-n="empresa" maxlength="120" placeholder="Razão social ou nome usado"></label>
+      <label class="field">Cód<input data-n="cod" type="number" min="1" value="${proximo}"></label>
+      <label class="field">Grupo<input data-n="grupo" maxlength="60"></label></div>
+    <div class="three"><label class="field">Tributação<input data-n="trib" list="listaTrib" placeholder="Escolha ou digite"><datalist id="listaTrib">${tribs.map(t => `<option value="${esc(t)}">`).join('')}</datalist></label>
+      <label class="field">Periodicidade<select data-n="period"><option>Mensal</option><option>Trimestral</option></select></label>
+      <label class="field">Prioridade<select data-n="prior"><option value="1">1</option><option value="2" selected>2</option></select></label></div>
+    <div class="two"><label class="field y">Novo responsável<select data-n="novoResp"><option value="">—</option>${RESPONSAVEIS.map(r => `<option>${r}</option>`).join('')}</select></label>
+      <label class="field y">Situação<select data-n="situacao"><option value="">—</option>${SITUACOES.map(s => `<option>${s}</option>`).join('')}</select></label></div>
+    <p class="hint" id="nErro"></p>
+    <div class="mf"><span class="sp"></span><button class="btn ghost" data-close>Cancelar</button><button class="btn primary" id="nSalvar">Cadastrar e completar dados</button></div>`);
+  $('#nSalvar').onclick = async () => {
+    const d = {}; document.querySelectorAll('#modalCard [data-n]').forEach(i => { const v = i.value.trim(); if (v) d[i.dataset.n] = v; });
+    d.cod = Number(d.cod); d.prior = Number(d.prior || 2);
+    const erroN = m => { $('#nErro').innerHTML = `<span style="color:var(--late)">${esc(m)}</span>`; };
+    if (!d.empresa) return erroN('Informe o nome da empresa.');
+    if (!Number.isInteger(d.cod) || d.cod < 1) return erroN('Informe um Cód válido (número inteiro).');
+    if (state.empresas.some(e => Number(e.cod) === d.cod)) return erroN(`O Cód ${d.cod} já é usado por outra empresa.`);
+    if (state.empresas.some(e => String(e.empresa).trim().toUpperCase() === d.empresa.toUpperCase())) return erroN('Já existe uma empresa com esse nome.');
+    const id = 'e' + d.cod; $('#nSalvar').disabled = true;
+    if (await gravar('empresas', id, {...d, atualizadoEm: new Date().toISOString()}, true)) {
+      toast('Empresa cadastrada');
+      setTimeout(() => abrirEmpresa(id), 300);
+    } else $('#nSalvar').disabled = false;
+  };
+}
+
+async function escrever(col, id, corpo, acao){   // acao: false = gravar inteiro · true = apagar · 'completar' = mesclar campos
+  if (!db) { local[col] = local[col] || {}; if (acao === true) delete local[col][id]; else if (acao === 'completar') local[col][id] = {...(local[col][id] || {}), ...corpo}; else local[col][id] = corpo; return; }
+  const ref = db.collection(col).doc(id);
+  const op = () => acao === true ? ref.delete() : acao === 'completar' ? ref.update(corpo) : ref.set(corpo);
+  try { await op(); }
+  catch(e){ if (e && (e.code === 'resource_exhausted' || e.code === 'unavailable')) { await new Promise(r => setTimeout(r, 3000)); await op(); } else throw e; }
+}
+async function importarBackup(dados, modo){
+  const btn = $('#iOk'); btn.disabled = true; $('#iProg').classList.remove('hidden');
+  const tarefas = [];
+  if (dados.parcial) {   // planilha ou lista: só empresas; existentes recebem só os campos preenchidos
+    const existentes = new Set((await lerColecao('empresas')).map(o => o.id));
+    dados.empresas.forEach(({id, ...corpo}) => tarefas.push(['empresas', id, corpo, existentes.has(id) ? 'completar' : false]));
+  } else for (const col of COLECOES) {
+    const ids = new Set(dados[col].map(o => o.id));
+    dados[col].forEach(({id, ...corpo}) => tarefas.push([col, id, corpo, false]));
+    if (modo === 'substituir') (await lerColecao(col)).forEach(o => { if (!ids.has(o.id)) tarefas.push([col, o.id, null, true]); });
+  }
+  let feitas = 0;
+  try {
+    for (const [col, id, corpo, ap] of tarefas) {
+      await escrever(col, id, corpo, ap); feitas++;
+      if (feitas % 10 === 0 || feitas === tarefas.length) { $('#iProg div').style.width = `${Math.round(feitas/tarefas.length*100)}%`; btn.textContent = `Importando… ${feitas}/${tarefas.length}`; }
+      if (db) await new Promise(r => setTimeout(r, 25));
+    }
+    if (!dados.parcial && dados.config && /^\d{4}-\d{2}$/.test(dados.config.ref || '')) {
+      state.ref = dados.config.ref; $('#refMes').value = state.ref;
+      if (db) await db.doc('config/geral').set({ref: state.ref}); else local.config.ref = state.ref;
+    }
+    if (!db) { salvarLocal(); localParaEstado(); }
+    fecharModal(); render();
+    toast(dados.parcial ? `${feitas} empresa(s) cadastrada(s) ou completada(s)` : `Backup importado: ${feitas} alterações`);
+  } catch(e){
+    if (!db) { salvarLocal(); localParaEstado(); render(); }
+    erro(e); btn.disabled = false; btn.textContent = 'Tentar de novo';
+    $('#iPrev').innerHTML += `<p style="color:var(--late)">Parou em ${feitas} de ${tarefas.length}. Importar de novo no modo Mesclar completa o que faltou.</p>`;
+  }
+}
+
+/* ============ Eventos ============ */
+function rotear(){ const h = location.hash.slice(1); state.view = ['lista','controle','kanban','resumo','pendencias'].includes(h) ? h : 'kanban'; render(); }
+function ligar(){
+  window.addEventListener('hashchange', rotear);
+  $('#btnExport').onclick = abrirExport;
+  $('#btnNova').onclick = novaEmpresa;
+  $('#modal').addEventListener('click', e => { if (e.target.id==='modal' || e.target.closest('[data-close]')) fecharModal(); });
+  document.addEventListener('keydown', e => { if (e.key==='Escape' && !$('#modal').classList.contains('hidden')) fecharModal(); });
+  $('#refMes').addEventListener('change', async e => { const v = e.target.value; if (!v) return; state.ref = v; render();
+    if (db) { try { await db.doc('config/geral').set({ref:v}); } catch(err){ erro(err); } } else { local.config.ref = v; salvarLocal(); } });
+  $('#kpis').addEventListener('click', e => { const b = e.target.closest('[data-rapido]'); if (!b) return;
+    state.f.rapido = state.f.rapido === b.dataset.rapido ? '' : b.dataset.rapido;
+    if (state.view === 'resumo' || state.view === 'pendencias') location.hash = '#lista'; else render(); });
+
+  const c = $('#conteudo');
+  c.addEventListener('click', e => {
+    const kv = e.target.closest('[data-kview]'); if (kv) { state.kview = kv.dataset.kview; try { localStorage.setItem('carteira-kview', state.kview); } catch(_){} render(); return; }
+    const em = e.target.closest('[data-emv]'); if (em) { const id = em.closest('[data-ecard]').dataset.ecard; const i = ORD[statusCtrl(state.ctrl[id])] + Number(em.dataset.emv); if (ETAPAS[i]) moverEtapa(id, ETAPAS[i][0]); return; }
+    const cb = e.target.closest('[data-cobrar]'); if (cb) return cobrar(cb.dataset.cobrar);
+    const dz = e.target.closest('[data-desfazer]'); if (dz) return desfazerCobranca(dz.dataset.desfazer);
+    const cf = e.target.closest('[data-cf]'); if (cf) { state.ctrlF = state.ctrlF === cf.dataset.cf ? '' : cf.dataset.cf; render(); return; }
+    const cm = e.target.closest('[data-comp]'); if (cm) return setComp(addMes(state.ctrlComp, Number(cm.dataset.comp)));
+    const ab = e.target.closest('[data-abrir]'); if (ab) return abrirEmpresa(ab.dataset.abrir);
+    const ecard = e.target.closest('[data-ecard]'); if (ecard) return abrirMes(ecard.dataset.ecard);
+    const card = e.target.closest('[data-card]'); if (card) return abrirEmpresa(card.dataset.card);
+    const mx = e.target.closest('[data-mx-s]'); if (mx){ state.f = {...state.f, situacao: mx.dataset.mxS, novoResp: mx.dataset.mxR, rapido:''}; location.hash = '#lista'; return; }
+    if (e.target.closest('[data-ver-semtrib]')){ e.preventDefault(); state.f.rapido = 'semTrib'; location.hash = '#lista'; render(); return; }
+    const dp = e.target.closest('[data-del-pend]'); if (dp){ apagar('pendencias', dp.dataset.delPend).then(ok => ok && toast('Pendência excluída')); }
+  });
+  c.addEventListener('change', async e => {
+    const t = e.target;
+    if (t.id === 'ctrlComp') { if (t.value) setComp(t.value); return; }
+    if (t.dataset.ck) { await marcar(t.dataset.emp, t.dataset.ck, t.checked); t.blur(); return; }
+    if (t.dataset.obs !== undefined && t.dataset.obs) { await putCtrl(t.dataset.obs, {obs: t.value.trim()}); t.blur(); return; }
+    if (t.dataset.pend) { await gravar('pendencias', t.dataset.pend, {[t.dataset.campo]: t.value}, false); t.blur(); return; }
+    if (t.dataset.id && t.dataset.campo) {
+      if (t.dataset.campo === 'situacao') t.className = 'cell-sel sit ' + SIT_CLS[t.value];
+      await campoEmpresa(t.dataset.id, {[t.dataset.campo]: t.value}); t.blur();
+    }
+  });
+  c.addEventListener('focusout', () => setTimeout(() => { if (renderPendente) render(); }, 50));
+  c.addEventListener('dragstart', e => { const k = e.target.closest('[data-card],[data-ecard]'); if (!k) return; e.dataTransfer.setData('text/plain', k.dataset.card ? 's:' + k.dataset.card : 'e:' + k.dataset.ecard); k.classList.add('dragging'); });
+  c.addEventListener('dragend', e => { const k = e.target.closest('[data-card],[data-ecard]'); if (k) k.classList.remove('dragging'); document.querySelectorAll('.over').forEach(x => x.classList.remove('over')); });
+  c.addEventListener('dragover', e => { const b = e.target.closest('[data-drop],[data-edrop]'); if (b){ e.preventDefault(); b.classList.add('over'); } });
+  c.addEventListener('dragleave', e => { const b = e.target.closest('[data-drop],[data-edrop]'); if (b && !b.contains(e.relatedTarget)) b.classList.remove('over'); });
+  c.addEventListener('drop', e => { const b = e.target.closest('[data-drop],[data-edrop]'); if (!b) return; e.preventDefault(); b.classList.remove('over');
+    const [tipo, id] = (e.dataTransfer.getData('text/plain') || ':').split(/:(.+)/);
+    if (tipo === 'e' && b.dataset.edrop) return moverEtapa(id, b.dataset.edrop);
+    const emp = state.empresas.find(x => x.id === id);
+    if (tipo === 's' && b.dataset.drop !== undefined && emp && (emp.situacao||'') !== b.dataset.drop) campoEmpresa(id, {situacao: b.dataset.drop}); });
+}
+
+(async function iniciar(){
+  try { state.kview = localStorage.getItem('carteira-kview') || 'etapa'; } catch(_){}
+  state.ref = mesPadrao(); $('#refMes').value = state.ref; state.ctrlComp = addMes(hojeISO().slice(0,7), -1);
+  montarFiltros(); ligar(); rotear();
+  let api = null;
+  try { if (window.claude && typeof window.claude.use === 'function') api = await window.claude.use('db'); } catch(e){}
+  if (api) {
+    db = api;
+    try { state.user = await window.claude.use('user'); state.uid = state.user ? await state.user.id() : null; } catch(e){ state.user = null; }
+    iniciarDb();
+  } else iniciarLocal();
+})();
+</script>
+</body>
+</html>
